@@ -1,0 +1,14 @@
+{
+  "name": "frontend",
+  "scripts": {
+    "dev": "shadow-cljs -A:dev watch app",
+    "release": "shadow-cljs -A:dev release app"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "shadow-cljs": "2.22.9",
+    "use-sync-external-store": "^1.2.0"
+  }
+}
