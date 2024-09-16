@@ -1,5 +1,10 @@
 # Opinionated example project
 
+Confidence level explanation:
+- Very high, high: I strongly believe this is the best choice nearly always
+- Medium: Should be a good choice, there could be cases where other choices are better
+- Low: I'm not sure if this is a good choice, but it solves something
+
 ## Backend choices
 
 | Lib | Confidence level | Comments |
