@@ -16,6 +16,8 @@ Confidence level explanation:
 | Honeysql | High | Can be useful to generate dynamic SQL queries |
 | HugSQL | High | Can be useful when writing SQL by hand |
 | hikari-cp | High | TODO: Check how necessary connection pool is with next.jdbc |
+| Log4j2/Logback | Medium | Current favorite is Log4j2. Logback is also great (and is used in most projects already,) |
+| TODO: Http server | | ring/ring-jetty-adapter should be good now or http-kit? NOT: Undertow, Aleph |
 
 ## Frontend choices
 
