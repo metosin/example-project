@@ -25,3 +25,21 @@
 
 Open questions?
 - Forms
+
+## "Code style etc"
+
+- Clj-kondo config
+- Maybe Clojure-LSP config (if needed)
+
+## Deployment
+
+Project requirements?
+- Will run on one node?
+- No scaling?
+
+Targets for the example project?
+- Produce usable docker image for the backend
+- Write optimize JS file somewhere? Index.html with hashed filenames for JS?
+- Should JS file be included in the BE image? Might be OK for this case.
+  - If the Clj BE serves the FE files, we can generate index.html on the fly with Hiccup and handle hashed filenames there.
+- Github Actions example? Could be useful as a starting point even if project will use different CI
