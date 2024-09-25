@@ -18,6 +18,7 @@ Confidence level explanation:
 | hikari-cp | High | |
 | Log4j2/Logback | Medium | Current favorite is Log4j2. Logback is also great (and is used in most projects already,) |
 | TODO: Http server | | ring/ring-jetty-adapter should be good now or http-kit? NOT: Undertow, Aleph |
+| Migratus/Flyway | High | Migratus is a good choice. Flyway has been used in many projects so there might be more experience of using it at Metosin. |
 
 ## Frontend choices
 
