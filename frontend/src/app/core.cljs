@@ -3,6 +3,7 @@
             ["@mui/material/Checkbox$default" :as Checkbox]
             ["@mui/material/Stack$default" :as Stack]
             ["@mui/material/Typography$default" :as Typography]
+            ["@mui/material/styles" :refer [ThemeProvider createTheme]]
             [uix.core :as uix :refer [defui $]]
             [uix.dom]
             [app.hooks :as hooks]
@@ -89,12 +90,19 @@
                    :on-set-todo-text #(rf/dispatch [:todo/set-text %1 %2]))))
        ($ footer))))
 
+(def theme (createTheme #js {}))
+
+(defui app-wrapper []
+  ($ ThemeProvider
+     {:theme theme}
+     ($ app)))
+
 (defonce root
   (uix.dom/create-root (js/document.getElementById "root")))
 
 (defn render []
   (rf/dispatch-sync [:app/init-db app.db/default-db])
-  (uix.dom/render-root ($ app) root))
+  (uix.dom/render-root ($ app-wrapper) root))
 
 (defn ^:export init []
   (render))

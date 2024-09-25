@@ -33,6 +33,9 @@ Confidence level explanation:
 
 Open questions?
 - Forms
+- Alternative component libs, no experience. Both use Emotion like MUI? So similar `sx` props.
+    - Chakra UI
+    - Theme UI
 
 ## "Code style etc"
 
