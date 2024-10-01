@@ -1,0 +1,2 @@
+{:tasks {outdated {:doc "Check depdendencies"
+                   :task (clojure "-M:outdated")}}}
