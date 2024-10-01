@@ -1,1 +1,3 @@
-{:lint-as {uix.core/defui clojure.core/defn}}
+{:lint-as {uix.core/defui clojure.core/defn}
+ :linters {:unsorted-required-namespaces {:level :warn
+                                          :sort :case-sensitive}}}

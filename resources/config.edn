@@ -1,0 +1,12 @@
+{:adapter/jetty {:port 3333
+                 :routes #ig/ref :web/routes}
+ :web/routes {:db #ig/ref :database/pool}
+ :database/pool {:adapter "postgresql"
+                 :username #or [#env "DB_USERNAME" "example"]
+                 :password #or [#env "DB_PASSWORD" "example"]
+                 :server-name #or [#env "DB_HOST" "localhost"]
+                 :port-number #long #or [#env "DB_PORT" 8532]
+                 :database-name #or [#env "DB_NAME" "example"]
+                 :connection-timeout 5000
+                 :validation-timeout 5000
+                 :maximum-pool-size 10}}
