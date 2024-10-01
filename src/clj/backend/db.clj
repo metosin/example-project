@@ -1,6 +1,6 @@
 (ns backend.db
-  (:require [next.jdbc.result-set :as rs]
-            [camel-snake-kebab.core :as csk]))
+  (:require [camel-snake-kebab.core :as csk]
+            [next.jdbc.result-set :as rs]))
 
 ;; TODO: Do we want to recommend mapping DB names to kebab-case?
 

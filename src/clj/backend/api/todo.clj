@@ -1,10 +1,7 @@
 (ns backend.api.todo
-  (:require [ring.util.http-response :as resp]
+  (:require [backend.db :as db]
             [next.jdbc.sql :as sql]
-            [backend.db :as db]
-            [common.schema :as schema]
-            [malli.core :as m]
-            [malli.transform :as mt]))
+            [ring.util.http-response :as resp]))
 
 (defn get-todo [req]
   (let [res (sql/find-by-keys (:db req) :todo :all db/opts)]

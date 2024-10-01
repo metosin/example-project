@@ -2,16 +2,15 @@
   (:require ["@mui/material/Button$default" :as Button]
             ["@mui/material/Checkbox$default" :as Checkbox]
             ["@mui/material/Stack$default" :as Stack]
-            ["@mui/material/Typography$default" :as Typography]
-            ["@mui/material/styles" :refer [ThemeProvider createTheme]]
-            [uix.core :as uix :refer [defui $]]
-            [uix.dom]
+            ["@mui/material/styles" :refer [createTheme ThemeProvider]]
+            [app.db]
+            [app.fx]
+            [app.handlers]
             [app.hooks :as hooks]
             [app.subs]
-            [app.handlers]
-            [app.fx]
-            [app.db]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [uix.core :as uix :refer [$ defui]]
+            [uix.dom]))
 
 (defui header []
   ($ :header.app-header

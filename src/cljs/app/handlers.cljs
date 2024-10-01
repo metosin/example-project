@@ -1,6 +1,6 @@
 (ns app.handlers
-  (:require [re-frame.core :as rf]
-            [app.fx :as fx]))
+  (:require [app.fx :as fx]
+            [re-frame.core :as rf]))
 
 (def load-todos (rf/inject-cofx :store/todos "uix-starter/todos"))
 (def store-todos (fx/store-todos "uix-starter/todos"))
