@@ -1,4 +1,4 @@
-{:deps true
+{:deps {:aliases [:shadow-cljs :frontend]}
  :dev-http {8080 "public"}
  :builds {:app
           {:target :browser

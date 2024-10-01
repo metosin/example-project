@@ -25,10 +25,11 @@
            "UIx"))))
 
 (defui text-field [{:keys [on-add-todo]}]
-  (let [[value set-value!] (uix/use-state "")]
+  (let [[value set-value!] (uix/use-state {:foo [{:bar ""}]})]
     ($ :input.text-input
        {:value value
         :placeholder "Add a new todo and hit Enter to save"
+        :style {:color "green"}
         :on-change (fn [^js e]
                      (set-value! (.. e -target -value)))
         :on-key-down (fn [^js e]
@@ -61,7 +62,12 @@
   [{:keys [created-at text status on-remove-todo on-set-todo-text]}]
   ($ Stack
      {:direction "row"
-      :sx #js {:my 1}}
+      :sx #js {:my 1
+               :mx 4
+               :backgroundColor "primary.main"
+               "&:hover" #js {}
+               ".Mui-Checkbox" #js {}}}
+
      ($ Checkbox
         {:checked (= status :resolved)
          :on-change #(rf/dispatch [:todo/toggle-status created-at])})
@@ -90,7 +96,8 @@
                    :on-set-todo-text #(rf/dispatch [:todo/set-text %1 %2]))))
        ($ footer))))
 
-(def theme (createTheme #js {}))
+(def theme (createTheme
+             #js {:components #js {:Checkbox #js {}}}))
 
 (defui app-wrapper []
   ($ ThemeProvider

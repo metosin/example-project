@@ -13,12 +13,13 @@ Confidence level explanation:
 | Reitit | Very high | |
 | Malli | Very high | |
 | Next.jdbc | Very high | |
-| Honeysql | High | Can be useful to generate dynamic SQL queries |
+| Honeysql v2 | High | Can be useful to generate dynamic SQL queries |
 | HugSQL | High | Can be useful when writing SQL by hand |
 | hikari-cp | High | |
 | Log4j2/Logback | Medium | Current favorite is Log4j2. Logback is also great (and is used in most projects already,) |
 | TODO: Http server | | ring/ring-jetty-adapter should be good now or http-kit? NOT: Undertow, Aleph |
 | Migratus/Flyway | High | Migratus is a good choice. Flyway has been used in many projects so there might be more experience of using it at Metosin. |
+| Java.time | High | No need for joda-time |
 
 ## Frontend choices
 
@@ -29,6 +30,7 @@ Confidence level explanation:
 | MUI | Medium? | One solution to writing styles inline in the Cljs components, seems to work relatively well with Cljs |
 | Reitit-frontend | Medium? | Good enough? It is used in most projects already. |
 | Malli | High | If/when needed for FE route parameter validation or any other schema validations. |
+| Date lib? Js-joda? Day-js or something? | Medium? | Moment is kind of old now. Closure Library is deprecated. |
 | MAYBE: TanStack Query | Low? Medium? | Useful abstraction for making calls to backend. Some challenges on using this together with Re-frame (and some with Cljs, but mostly solved.) |
 
 Open questions?
