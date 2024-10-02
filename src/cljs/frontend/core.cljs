@@ -10,7 +10,10 @@
             ["@mui/material/TextField$default" :as TextField]
             ["@mui/material/Toolbar$default" :as Toolbar]
             ["@mui/material/Typography$default" :as Typography]
+            ["@mui/material/SvgIcon$default" :as SvgIcon]
             ["@mui/material/styles" :refer [createTheme ThemeProvider]]
+            ;; src/js/Cross.js (generated from src/svg/cross.svg)
+            ["/Cross$default" :as Cross]
             [frontend.db]
             [frontend.fx]
             [frontend.handlers]
@@ -76,7 +79,8 @@
          ;;               v- theme color
          :sx #js {:color "error.main"
                   :fontSize "1.5rem"}}
-        "×")))
+        ($ SvgIcon
+           {:component Cross}))))
 
 (defui app []
   (let [todos (use-subscribe [:app/todos])]

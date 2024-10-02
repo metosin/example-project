@@ -6,4 +6,11 @@
          lint {:doc "Lint"
                :task (shell "clj-kondo --lint src")}
          init-lint {:doc "Initialize clj-kondo cache and copy lib configs"
-                    :task (shell "sh -c" "clj-kondo --copy-configs --lint $(clj -Spath -A:backend:frontend)")}}}
+                    :task (shell "sh -c" "clj-kondo --copy-configs --lint $(clj -Spath -A:backend:frontend)")}
+         -clean-svgs {:tasks (shell "rm target/gen/svg/* src/js/*")}
+         -svgr {:depends [-clean-svgs]
+                :doc "Generate React component JSX files for svg files"
+                :task (shell "npx @svgr/cli --out-dir target/gen/svg -- src/svg")}
+         svg-icons {:doc "Generate React component JS files for svg files"
+                    :depends [-svgr]
+                    :task (shell "npx babel target/gen/svg --out-dir src/js")}}}

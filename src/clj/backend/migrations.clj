@@ -30,3 +30,6 @@
       "create"  (let [[name type] (rest args)]
                   (create-migration name type))
       (throw (ex-info (str "Unknown command \"" command "\" Available commands are: init, migrate") {})))))
+
+(comment
+  (run-migration-system migratus/migrate))

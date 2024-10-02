@@ -70,9 +70,18 @@
   (ring/ring-handler
     (ring/router
       ["/api"
-       ["/todo" {:summary "Return a list of todo items"
-                 :get {:handler #'todo/get-todo
-                       :responses {200 {:body [:sequential schema/todo]}}}}]
+       ["/todo"
+        [""
+         {:summary "Return a list of todo items"
+          :get {:handler #'todo/get-todo
+                :responses {200 {:body [:sequential schema/todo]}}}
+          :post {:handler #'todo/create-todo
+                 :parameters {:body schema/new-todo}}}]
+        ["/:id"
+         {:put {:parameters {:query [:map
+                                     [:id :string]]
+                             :body schema/update-todo}
+                :handler #'todo/update-todo}}]]
        ["/swagger.json" {:no-doc true
                          :get (swagger/create-swagger-handler)}]
        ["/docs/*" {:no-doc true

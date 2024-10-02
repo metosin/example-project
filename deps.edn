@@ -20,7 +20,8 @@
                          metosin/ring-http-response {:mvn/version "0.9.4"}
                          metosin/muuntaja {:mvn/version "0.6.10"}
                          camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
-                         ;; TODO: Other logging deps
+                         ;; TODO: Other logging deps (redirect from other libs)
+                         org.clojure/clojure.tools.logging {:mvn/version "1.3.0"}
                          ch.qos.logback/logback-classic {:mvn/version "1.5.8"}}}
 
            :dev
@@ -36,7 +37,7 @@
 
            ;; Frontend
            :frontend
-           {:extra-paths ["src/cljs"]
+           {:extra-paths ["src/cljs" "src/js"]
             :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.132"}
                          com.pitch/uix.core {:mvn/version "1.1.1"}
                          com.pitch/uix.dom {:mvn/version "1.1.1"}
