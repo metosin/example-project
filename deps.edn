@@ -37,7 +37,7 @@
 
            ;; Frontend
            :frontend
-           {:extra-paths ["src/cljs" "src/js"]
+           {:extra-paths ["src/cljs" "src/js" "test/cljs"]
             :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.132"}
                          com.pitch/uix.core {:mvn/version "1.1.1"}
                          com.pitch/uix.dom {:mvn/version "1.1.1"}

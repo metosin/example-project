@@ -117,7 +117,10 @@
      ($ app)))
 
 (defonce root
-  (uix.dom/create-root (js/document.getElementById "app")))
+  ;; This def is also running in Karma tests, where the element isn't available.
+  ;; Avoid errors, we won't need the react root there?
+  (when-let [el (js/document.getElementById "app")]
+     (uix.dom/create-root el)))
 
 (defn render []
   (rf/dispatch-sync [:app/init-db frontend.db/default-db])
