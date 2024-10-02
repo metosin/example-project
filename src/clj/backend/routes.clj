@@ -14,7 +14,8 @@
             [reitit.ring.middleware.exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.swagger :as swagger]
-            [reitit.swagger-ui :as swagger-ui]))
+            [reitit.swagger-ui :as swagger-ui]
+            [ring.util.http-response :as resp]))
 
 (def muuntaja-instance
   (m/create (-> m/default-options
@@ -63,7 +64,7 @@
       [:div#app
        [:div.loading
         [:h1 "Loading, please wait..."]]]
-      [:script {:type "text/javascript" :src (str "js/" (main-js-file))}]]]))
+      [:script {:type "text/javascript" :src (str "/js/" (main-js-file))}]]]))
 
 (defn app [env]
   (ring/ring-handler
@@ -84,12 +85,18 @@
                            ring.coercion/coerce-request-middleware
                            ring.coercion/coerce-response-middleware
                            [wrap-database-middleware (:db env)]]}})
+    ;; Default handler - handle resources (js files), index.html and 404 for API endpoints
     (ring/routes
       (ring/create-resource-handler {:path ""
                                      :root "public"})
-      (fn [_req]
-        {:status 200
-         :body (str (index))}))))
+      (ring/ring-handler
+        (ring/router
+          [""
+           ["/api/*" {:handler (fn [_req]
+                                 (resp/not-found))}]
+           ;; Return index.html for any non-API routes for History API routing
+           ["/*" {:get {:handler (fn [_req] (resp/ok (str (index))))}}]]
+          {:conflicts nil})))))
 
 (defmethod ig/init-key :web/routes [_ env]
   (app env))
