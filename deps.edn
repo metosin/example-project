@@ -1,10 +1,14 @@
-{:deps {org.clojure/clojure {:mvn/version "1.12.0"}}
+{:deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        metosin/reitit-core {:mvn/version "0.7.2"}
+        metosin/malli {:mvn/version "0.16.4"}}
  :paths ["src/cljc" "resources"]
  :aliases {:backend
            {:extra-paths ["src/clj"]
-            :extra-deps {metosin/malli {:mvn/version "0.16.4"}
-                         metosin/reitit {:mvn/version "0.7.2"}
+            :extra-deps {metosin/reitit-ring {:mvn/version "0.7.2"}
                          metosin/reitit-malli {:mvn/version "0.7.2"}
+                         metosin/reitit-middleware {:mvn/version "0.7.2"}
+                         metosin/reitit-swagger {:mvn/version "0.7.2"}
+                         metosin/reitit-swagger-ui {:mvn/version "0.7.2"}
                          aero/aero {:mvn/version "1.1.6"}
                          integrant/integrant {:mvn/version "0.12.0"}
                          integrant/repl {:mvn/version "0.3.3"}
@@ -39,6 +43,7 @@
            :frontend
            {:extra-paths ["src/cljs" "src/js" "test/cljs"]
             :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.132"}
+                         metosin/reitit-frontend {:mvn/version "0.7.2"}
                          com.pitch/uix.core {:mvn/version "1.1.1"}
                          com.pitch/uix.dom {:mvn/version "1.1.1"}
                          re-frame/re-frame {:mvn/version "1.4.3"}}}
