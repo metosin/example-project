@@ -10,7 +10,12 @@
 (def todo-coercer (m/coercer schema/todo mt/string-transformer))
 (def todos-coercer (m/coercer [:sequential schema/todo] mt/string-transformer))
 
-(defn get-todo [req]
+(defn get-todo [db id]
+  (let [res (sql/get-by-id db :todo id :id db/opts)
+        res (todo-coercer res)]
+    res))
+
+(defn get-todos [req]
   (let [res (sql/find-by-keys (:db req) :todo :all db/opts)
         res (todos-coercer res)]
     (resp/ok res)))
@@ -24,9 +29,7 @@
 (defn update-todo [req]
   (jdbc/with-transaction [tx (:db req)]
     (sql/update! tx :todo (:body (:parameters req)) ["id = ?" (:id (:path (:parameters req)))] db/opts)
-    (let [res (sql/get-by-id tx :todo (:id (:path (:parameters req))) :id db/opts)
-          res (todo-coercer res)]
-      (resp/ok res))))
+    (get-todo tx (:id (:path (:parameters req))) )))
 
 (defn delete-todo [req]
   (let [x (sql/delete! (:db req) :todo ["id = ?" (:id (:path (:parameters req)))] db/opts)]

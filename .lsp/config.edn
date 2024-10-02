@@ -1,5 +1,5 @@
 {;; Include deps.edn aliases
- :source-aliases #{:dev :backend :frontend}
+ :source-aliases #{:dev :backend :frontend :test}
  :clean {:automatically-after-ns-refactor true
          :ns-inner-blocks-indentation :same-line
          :sort {:require :lexicographically}}}

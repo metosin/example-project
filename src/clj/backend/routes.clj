@@ -73,7 +73,7 @@
        ["/todo"
         [""
          {:summary "Return a list of todo items"
-          :get {:handler #'todo/get-todo
+          :get {:handler #'todo/get-todos
                 :responses {200 {:body [:sequential schema/todo]}}}
           :post {:handler #'todo/create-todo
                  :responses {200 {:body schema/todo}}

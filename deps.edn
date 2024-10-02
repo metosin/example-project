@@ -21,7 +21,7 @@
                          metosin/muuntaja {:mvn/version "0.6.10"}
                          camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
                          ;; TODO: Other logging deps (redirect from other libs)
-                         org.clojure/clojure.tools.logging {:mvn/version "1.3.0"}
+                         org.clojure/tools.logging {:mvn/version "1.3.0"}
                          ch.qos.logback/logback-classic {:mvn/version "1.5.8"}}}
 
            :dev
@@ -32,8 +32,8 @@
 
            :test
            {:extra-paths ["test/clj"]
-            :extra-deps {lambdaisland/kaocha {:mvn/version "1.87.1366"}
-                         lambdaisland/kaocha-cljs {:mvn/version "1.5.154"}}}
+            :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
+            :main-opts ["-m" "kaocha.runner"]}
 
            ;; Frontend
            :frontend
@@ -50,7 +50,7 @@
                          org.slf4j/slf4j-simple {:mvn/version "2.0.16"}}}
 
            :build
-           {:deps {io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}}
+           {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}}
             :ns-default build}
 
            :outdated

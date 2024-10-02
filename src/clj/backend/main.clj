@@ -6,17 +6,9 @@
             [cognitect.transit]
             [hikari-cp.core :as hikari-cp]
             [integrant.core :as ig]
-            [malli.core :as malli]
-            [malli.experimental.time :as malli.time]
-            [malli.registry :as malli.registry]
             [next.jdbc.date-time]
             [reitit.ring.middleware.exception]
             [ring.adapter.jetty :as jetty]))
-
-(malli.registry/set-default-registry!
-  (malli.registry/composite-registry
-    (malli/default-schemas)
-    (malli.time/schemas)))
 
 (defmethod aero.core/reader 'ig/ref
   [_opts _tag value]

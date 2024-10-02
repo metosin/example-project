@@ -2,7 +2,15 @@
   (:require [malli.core :as m]
             [malli.transform :as mt]
             [malli.util :as mu]
+            [malli.core :as malli]
+            [malli.experimental.time :as malli.time]
+            [malli.registry :as malli.registry]
             [malli.experimental.time]))
+
+(malli.registry/set-default-registry!
+  (malli.registry/composite-registry
+    (malli/default-schemas)
+    (malli.time/schemas)))
 
 (def todo
   [:map
