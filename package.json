@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "scripts": {
-    "dev": "shadow-cljs -A:dev watch app",
-    "release": "shadow-cljs -A:dev release app"
+    "dev": "shadow-cljs watch app",
+    "release": "shadow-cljs release app"
   },
   "devDependencies": {
     "react-refresh": "^0.14.2",

@@ -1,4 +1,4 @@
-(ns app.fx
+(ns frontend.fx
   (:require [clojure.edn :as edn]
             [re-frame.core :as rf]))
 

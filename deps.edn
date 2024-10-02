@@ -10,6 +10,7 @@
                          integrant/repl {:mvn/version "0.3.3"}
                          org.postgresql/postgresql {:mvn/version "42.7.4"}
                          com.github.seancorfield/next.jdbc {:mvn/version "1.3.939"}
+                         hiccup/hiccup {:mvn/version "2.0.0-RC3"}
                          ;; Honeysql
                          ;; Hugsql
                          hikari-cp/hikari-cp {:mvn/version "3.1.0"}
@@ -23,7 +24,7 @@
                          ch.qos.logback/logback-classic {:mvn/version "1.5.8"}}}
 
            :dev
-           {:extra-paths ["dev"]}
+           {:extra-paths ["dev/clj" "target/dev"]}
 
            :repl
            {:extra-deps {}}
@@ -42,14 +43,16 @@
                          re-frame/re-frame {:mvn/version "1.4.3"}}}
 
            :shadow-cljs
-           {:extra-paths ["dev"]
+           {:extra-paths ["dev/cljs"]
             :extra-deps {thheller/shadow-cljs {:mvn/version "2.28.15"}
-                         binaryage/devtools {:mvn/version "1.0.7"}}}
+                         binaryage/devtools {:mvn/version "1.0.7"}
+                         org.slf4j/slf4j-simple {:mvn/version "2.0.16"}}}
 
            :build
            {:deps {io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}}
             :ns-default build}
 
            :outdated
-           {:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
+           {:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}
+                   org.slf4j/slf4j-simple {:mvn/version "2.0.16"}}
             :main-opts ["-m" "antq.core"]}}}

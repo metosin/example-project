@@ -1,4 +1,5 @@
-(ns app.hooks
+(ns frontend.uix.hooks
+  "Re-frame Hook integration"
   (:require ["use-sync-external-store/with-selector" :refer [useSyncExternalStoreWithSelector]]
             [re-frame.core :as rf]
             [reagent.impl.component :as impl.component]

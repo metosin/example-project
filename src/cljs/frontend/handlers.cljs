@@ -1,5 +1,5 @@
-(ns app.handlers
-  (:require [app.fx :as fx]
+(ns frontend.handlers
+  (:require [frontend.fx :as fx]
             [re-frame.core :as rf]))
 
 (def load-todos (rf/inject-cofx :store/todos "uix-starter/todos"))

@@ -1,3 +1,8 @@
+# NOTE: Consider not using uberjar and adding deps to their own layers:
+# https://github.com/metosin/packaging-clojure-examples/tree/master/deps-docker
+
+# NOTE: Consider building your own distroless base image and with minimal java (jlink)?
+
 # No need for any clojure deps since the uberjar has already been built
 FROM openjdk:17
 WORKDIR /

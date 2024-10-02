@@ -1,13 +1,13 @@
-(ns app.core
+(ns frontend.core
   (:require ["@mui/material/Button$default" :as Button]
             ["@mui/material/Checkbox$default" :as Checkbox]
             ["@mui/material/Stack$default" :as Stack]
             ["@mui/material/styles" :refer [createTheme ThemeProvider]]
-            [app.db]
-            [app.fx]
-            [app.handlers]
-            [app.hooks :as hooks]
-            [app.subs]
+            [frontend.db]
+            [frontend.fx]
+            [frontend.handlers]
+            [frontend.uix.hooks :refer [use-subscribe]]
+            [frontend.subs]
             [re-frame.core :as rf]
             [uix.core :as uix :refer [$ defui]]
             [uix.dom]))
@@ -81,7 +81,7 @@
         "×")))
 
 (defui app []
-  (let [todos (hooks/use-subscribe [:app/todos])]
+  (let [todos (use-subscribe [:app/todos])]
     ($ Stack
        {}
        ($ header)
@@ -104,10 +104,10 @@
      ($ app)))
 
 (defonce root
-  (uix.dom/create-root (js/document.getElementById "root")))
+  (uix.dom/create-root (js/document.getElementById "app")))
 
 (defn render []
-  (rf/dispatch-sync [:app/init-db app.db/default-db])
+  (rf/dispatch-sync [:app/init-db frontend.db/default-db])
   (uix.dom/render-root ($ app-wrapper) root))
 
 (defn ^:export init []
