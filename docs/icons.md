@@ -4,6 +4,13 @@
 
 https://www.npmjs.com/package/@mui/icons-material
 
+```
+(ns foo
+  (:require ["@mui/icons-material/Home$default" :as Home]))
+
+($ Home)
+```
+
 ## Custom svg files
 
 With Closure-compiler, you can use svgr + Babel to generate
@@ -20,7 +27,8 @@ Relevant configuration:
 - `.babelrc` used to convert the JSX from from SVGr to JS that can be consumed by Closure-compiler
 - `bb.edn`
 
-Often you'll likely want to use the icon components with MUI SvgIcon component:
+Often you'll likely want to wrap the custom icon components with MUI SvgIcon component. This ensures the svg components
+follow font size/MUI icon sizing, and has support for `:sx` property.
 
 ```
 (ns foo

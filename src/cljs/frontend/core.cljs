@@ -12,6 +12,7 @@
             ["@mui/material/Typography$default" :as Typography]
             ["@mui/material/SvgIcon$default" :as SvgIcon]
             ["@mui/material/styles" :refer [createTheme ThemeProvider]]
+            ["@mui/icons-material/Home$default" :as Home]
             ;; src/js/Cross.js (generated from src/svg/cross.svg)
             ["/Cross$default" :as Cross]
             [frontend.db]
@@ -27,6 +28,8 @@
   ($ AppBar
      {:position "static"}
      ($ Toolbar
+        ($ Home
+           {:sx #js {:mr 2}})
         ($ Typography
            "Example"))))
 

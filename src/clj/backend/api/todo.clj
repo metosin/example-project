@@ -11,4 +11,5 @@
   (sql/insert! (:db req) :todo (:body (:parameters req))))
 
 (defn update-todo [req]
-  (sql/update! (:db req) :todo (:body (:parameters req)) ["id = ?" (:id (:query (:parameters req)))]))
+  (sql/update! (:db req) :todo (:body (:parameters req)) ["id = ?" (:id (:query (:parameters req)))])
+  (resp/ok))
