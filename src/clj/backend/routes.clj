@@ -76,12 +76,14 @@
           :get {:handler #'todo/get-todo
                 :responses {200 {:body [:sequential schema/todo]}}}
           :post {:handler #'todo/create-todo
+                 :responses {200 {:body schema/todo}}
                  :parameters {:body schema/new-todo}}}]
         ["/:id"
-         {:put {:parameters {:query [:map
-                                     [:id :string]]
-                             :body schema/update-todo}
-                :handler #'todo/update-todo}}]]
+         {:parameters {:path [:map [:id :int]]}
+          :put {:parameters {:body schema/update-todo}
+                :responses {200 {:body schema/todo}}
+                :handler #'todo/update-todo}
+          :delete {:handler #'todo/delete-todo}}]]
        ["/swagger.json" {:no-doc true
                          :get (swagger/create-swagger-handler)}]
        ["/docs/*" {:no-doc true

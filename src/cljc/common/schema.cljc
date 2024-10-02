@@ -9,7 +9,7 @@
    [:id :int]
    [:text :string]
    [:status [:enum :resolved :unresolved]]
-   [:created_at :time/instant]])
+   [:created-at :time/instant]])
 
 (def new-todo
   (-> todo
@@ -17,4 +17,5 @@
 
 (def update-todo
   (-> todo
-      (mu/select-keys [:text :status])))
+      (mu/select-keys [:text :status])
+      (mu/optional-keys)))
