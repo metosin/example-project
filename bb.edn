@@ -13,10 +13,10 @@
                        :task (shell "npm run test-browser")}
          test-karma {:doc "Build and run cljs unit tests for/with Karma"
                      :task (shell "npm run test-karma")}
-         -clean-svgs {:tasks (shell "rm target/gen/svg/* src/js/*")}
+         -clean-svgs {:tasks (shell "rm target/gen/svg/* src/js/icons/*")}
          -svgr {:depends [-clean-svgs]
                 :doc "Generate React component JSX files for svg files"
                 :task (shell "npx @svgr/cli --out-dir target/gen/svg -- src/svg")}
-         svg-icons {:doc "Generate React component JS files for svg files"
-                    :depends [-svgr]
-                    :task (shell "npx babel target/gen/svg --out-dir src/js")}}}
+         icons {:doc "Generate React component JS files for svg files"
+                :depends [-svgr]
+                :task (shell "npx babel target/gen/svg --out-dir src/js/icons")}}}
