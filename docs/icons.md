@@ -30,6 +30,9 @@ Relevant configuration:
 Often you'll likely want to wrap the custom icon components with MUI SvgIcon component. This ensures the svg components
 follow font size/MUI icon sizing, and has support for `:sx` property.
 
+Require form `/` tells Shadow-cljs to look for JS files in root of project source-paths. `src/js` in included
+in `deps.edn` `frontend` alias.
+
 ```
 (ns foo
   (:require ["/Cross$default" :as Cross]))
