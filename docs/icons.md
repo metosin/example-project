@@ -13,6 +13,9 @@ https://www.npmjs.com/package/@mui/icons-material
 
 ## Custom svg files
 
+This isn't strictly just for "icons". You could use this for other
+SVG artwork also.
+
 With Closure-compiler, you can use svgr + Babel to generate
 JS files to use from Cljs code.
 
@@ -22,8 +25,10 @@ svgr and babel, the results are committed to the repo.
 Relevant configuration:
 
 - `svgr.config.js` configuration for SVGr
-    - `replaceAttrValues` replaces color codes so the color can be controlled using
-      CSS text color
+    - `replaceAttrValues` replaces color codes in svg elements so the color can
+      be controlled using CSS text color (`currentColor`). You could also replace
+      the colors with CSS variables like `var(--icon-color-1)` if you need to be
+      able to control multiple colors in the icons.
 - `.babelrc` used to convert the JSX from from SVGr to JS that can be consumed by Closure-compiler
 - `bb.edn`
 
@@ -41,3 +46,9 @@ in `deps.edn` `frontend` alias.
 ($ SvgIcon
    {:component Cross})
 ```
+
+### Alternative tooling
+
+If you use ESBuild or other JS bundler, you don't need to precompile the svgs
+to JS files, and instead can let the bundler to handle the files:
+https://github.com/metosin/shadow-cljs-esbuild
