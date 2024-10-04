@@ -1,34 +1,39 @@
 (ns frontend.handlers
-  (:require [frontend.fx :as fx]
+  (:require [frontend.http-fx :as http]
             [re-frame.core :as rf]))
 
-(def load-todos (rf/inject-cofx :store/todos "uix-starter/todos"))
-(def store-todos (fx/store-todos "uix-starter/todos"))
+(rf/reg-event-fx ::get-todos
+  (fn [_ _]
+    {:fx [[:dispatch [:http/init [:todos]]]
+          [::http/fetch {:method :get
+                         :url "/api/todo"
+                         :on-success [:http/success [:todos]]
+                         :on-failure [:http/failure [:todos]]}]]}))
 
-(rf/reg-event-fx :app/init-db
-  [load-todos]
-  (fn [{:store/keys [todos]} [_ default-db]]
-    {:db (update default-db :todos into todos)}))
+(rf/reg-event-fx ::add
+  (fn [_ [_ todo]]
+    {::http/fetch {:method :post
+                   :url "/api/todo"
+                   :request-content-type :json
+                   :body todo
+                   ;; TODO: :http/init / success / failure could be used to store
+                   ;; action status also (i.e. action is pending), maybe
+                   ;; replace success with clear handler so the data is removed when
+                   ;; operation is done (or maybe with a timeout?)
+                   :on-success [::get-todos]}}))
 
-(rf/reg-event-fx :todo/add
-  [(rf/inject-cofx :time/now) store-todos]
-  (fn [{:keys [db]
-        :time/keys [now]}
-       [_ todo]]
-    {:db (assoc-in db [:todos now] todo)}))
+(rf/reg-event-fx ::remove
+  (fn [_ [_ id]]
+    {::http/fetch {:method :delete
+                   :url (str "/api/todo/" id)
+                   :on-success [::get-todos]}}))
 
-(rf/reg-event-db :todo/remove
-  [store-todos]
-  (fn [db [_ created-at]]
-    (update db :todos dissoc created-at)))
+;; TODO: Need a callback to clear the UI state
+(rf/reg-event-fx ::save-changes
+  (fn [_ [_ id changes]]
+    {::http/fetch {:method :put
+                   :url (str "/api/todo/" id)
+                   :request-content-type :json
+                   :body changes
+                   :on-success [::get-todos]}}))
 
-(rf/reg-event-db :todo/set-text
-  [store-todos]
-  (fn [db [_ created-at text]]
-    (assoc-in db [:todos created-at :text] text)))
-
-(rf/reg-event-db :todo/toggle-status
-  [store-todos]
-  (fn [db [_ created-at]]
-    (update-in db [:todos created-at :status] {:unresolved :resolved
-                                               :resolved :unresolved})))

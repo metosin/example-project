@@ -29,7 +29,7 @@
 (defn update-todo [req]
   (jdbc/with-transaction [tx (:db req)]
     (sql/update! tx :todo (:body (:parameters req)) ["id = ?" (:id (:path (:parameters req)))] db/opts)
-    (get-todo tx (:id (:path (:parameters req))) )))
+    (resp/ok (get-todo tx (:id (:path (:parameters req)))))))
 
 (defn delete-todo [req]
   (let [x (sql/delete! (:db req) :todo ["id = ?" (:id (:path (:parameters req)))] db/opts)]

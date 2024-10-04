@@ -1,10 +1,12 @@
 (ns preload
-  (:require [uix.dev]
-            [shadow.cljs.devtools.client.browser]))
+  (:require [re-frame.core :as rf]
+            [shadow.cljs.devtools.client.browser]
+            [uix.dev]))
 
 (uix.dev/init-fast-refresh!)
 
 (defn ^:dev/after-load refresh []
+  (rf/clear-subscription-cache!)
   (uix.dev/refresh!))
 
 (defonce init-repl!

@@ -7,7 +7,7 @@
            :output-dir "target/dev/public/js"
            :modules {:main {:entries [frontend.core]
                             :init-fn frontend.core/init}}
-           :devtools {:preloads [preload devtools.preload]}
+           :devtools {:preloads [preload devtools.preload dev]}
            :release {:output-dir "target/release/public/js"}}
 
           :test-browser

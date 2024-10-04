@@ -52,7 +52,10 @@
                          metosin/reitit-frontend {:mvn/version "0.7.2"}
                          com.pitch/uix.core {:mvn/version "1.1.1"}
                          com.pitch/uix.dom {:mvn/version "1.1.1"}
-                         re-frame/re-frame {:mvn/version "1.4.3"}}}
+                         re-frame/re-frame {:mvn/version "1.4.3"}
+                         superstructor/re-frame-fetch-fx {:mvn/version "0.4.0"}
+                         metosin/reagent-dev-tools {:mvn/version "1.0.3"}
+                         com.cognitect/transit-cljs {:mvn/version "0.8.280"}}}
 
            :shadow-cljs
            {:extra-paths ["dev/cljs"]

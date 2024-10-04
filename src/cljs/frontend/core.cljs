@@ -12,10 +12,8 @@
             ["@mui/material/Toolbar$default" :as Toolbar]
             ["@mui/material/Typography$default" :as Typography]
             ["@mui/material/styles" :refer [createTheme ThemeProvider]]
-            [frontend.db]
-            [frontend.fx]
-            [frontend.handlers]
-            [frontend.subs]
+            [frontend.handlers :as h]
+            [frontend.subs :as s]
             [frontend.uix.hooks :refer [use-subscribe]]
             [re-frame.core :as rf]
             [uix.core :as uix :refer [$ defui]]
@@ -63,45 +61,50 @@
                  ".MuiInputBase-input" #js {:textDecoration (when resolved "line-through")}}})))
 
 (defui todo-item
-  [{:keys [created-at text status on-remove-todo on-set-todo-text]}]
-  ($ Stack
-     {:direction "row"
-      :sx #js {:alignItems "center"}}
-     ($ Checkbox
-        {:checked (= :resolved status)
-         :on-change #(rf/dispatch [:todo/toggle-status created-at])})
-     ($ editable-text
-        {:text text
-         :resolved (= :resolved status)
-         :on-done-editing #(on-set-todo-text created-at %)})
-     ($ Button
-        {:on-click #(on-remove-todo created-at)
-         ;;               v- theme color
-         :sx #js {:color "error.main"
-                  :fontSize "1.5rem"}}
-        ($ SvgIcon
-           {:component Cross}))))
+  [{:keys [todo]}]
+  (let [{:keys [id text status]} todo]
+     ($ Stack
+        {:direction "row"
+         :sx #js {:alignItems "center"}}
+        ($ Checkbox
+           {:checked (= :resolved status)
+            :on-change (fn [_e]
+                          (rf/dispatch [::h/save-changes id {:status (if (= :resolved status)
+                                                                        :unresolved
+                                                                        :resolved)}]))})
+        ($ editable-text
+           {:text text
+            :resolved (= :resolved status)
+            :on-done-editing (fn [text]
+                                (rf/dispatch [::h/save-changes id {:text text}]))})
+        ($ Button
+           {:on-click (fn [_e]
+                         (rf/dispatch [::h/remove id]))
+            :sx #js {:color "error.main"
+                     :fontSize "1.5rem"}}
+           ($ SvgIcon
+              {:component Cross})))))
 
 (defui app []
-  (let [todos (use-subscribe [:app/todos])]
+  (let [todos (use-subscribe [::s/todos])]
+    (uix/use-effect (fn []
+                       (rf/dispatch [::h/get-todos]))
+                    [])
     ($ Stack
        {:direction "column"}
        ($ header)
        ($ Container
           {:direction "column"
            :sx #js {:p 4}}
-          ($ text-field {:on-add-todo #(rf/dispatch [:todo/add %])})
+          ($ text-field {:on-add-todo #(rf/dispatch [::h/add %])})
           ($ Stack
              {:direction "column"
               :sx #js {:mt 4
                        :gap 2}}
-             (for [[created-at todo] todos]
+             (for [todo todos]
                ($ todo-item
-                  (assoc todo
-                         :created-at created-at
-                         :key created-at
-                         :on-remove-todo #(rf/dispatch [:todo/remove %])
-                         :on-set-todo-text #(rf/dispatch [:todo/set-text %1 %2])))))))))
+                  {:key (:id todo)
+                   :todo todo})))))))
 
 (def theme (createTheme
              #js {:components #js {:Checkbox #js {}}}))
@@ -120,7 +123,6 @@
      (uix.dom/create-root el)))
 
 (defn render []
-  (rf/dispatch-sync [:app/init-db frontend.db/default-db])
   (uix.dom/render-root ($ app-wrapper) root))
 
 (defn ^:export init []
