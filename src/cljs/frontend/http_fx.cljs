@@ -20,14 +20,14 @@
 
 (rf/reg-fx ::fetch
   (fn [effect]
-    (doseq [effect (fetch-fx/->seq effect)]
+    (doseq [x (fetch-fx/->seq effect)]
       (fetch-fx/fetch (merge-with merge
                                   {:envelope? false
                                    :response-content-types {#"application/json" :json
                                                             #"application/transit\+json" {:reader-kw :text
                                                                                           :reader-fn read-transit}}
-                                   :headers {"Accept" "transit/application+json"}}
-                                  effect)))))
+                                   :headers {"Accept" "application/transit+json"}}
+                                  x)))))
 
 ;; Reusable events to store http request status to app-db
 ;; I suggest to include resource ids ("identity") in the path,
