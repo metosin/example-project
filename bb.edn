@@ -19,4 +19,91 @@
                 :task (shell "npx @svgr/cli --out-dir target/gen/svg -- src/svg")}
          icons {:doc "Generate React component JS files for svg files"
                 :depends [-svgr]
-                :task (shell "npx babel target/gen/svg --out-dir src/js/icons")}}}
+                :task (shell "npx babel target/gen/svg --out-dir src/js/icons")}
+
+         db-up   {:doc "Start the database"
+                  :task (shell "docker compose -p example-project up -d")}
+         db-down {:doc "Stop the database"
+                  :task (shell "docker compose -p example-project down -d")}
+
+         native-image {:doc "Create native image"
+                       :requires ([babashka.process :as p]
+                                  [babashka.wait :as wait])
+                       :task (do
+                               (defn start-backend-with-native-image-agent [http-port]
+                                 (shell "bb db-up")
+                                 (let [timeout-ms 5000
+                                       tracing-process (p/process {:inherit true
+                                                                   :extra-env {"CONFIG_EDN" "resources/config.edn"
+                                                                               "HTTP_PORT" http-port}}
+                                                                  "java" (str "-agentlib:native-image-agent="
+                                                                              "config-output-dir=target/native-image-configuration/META-INF/native-image")
+                                                                  "-jar" "target/app.jar")]
+                                   (when (= :timeout (wait/wait-for-port "localhost" http-port
+                                                                         {:timeout timeout-ms
+                                                                          :default :timeout}))
+                                     (p/destroy-tree tracing-process)
+                                     (throw (Exception. (str "Backend didn't start in " timeout-ms "ms"))))
+                                   tracing-process))
+
+                               ;; Do a training run to gather metadata via native-image-agent
+                               ;; Note that should not refer to any unnecessary test resources on the classpath during training,
+                               ;; since those will get included into the metadata
+                               (let [http-port 3322
+                                     tracing-process (start-backend-with-native-image-agent http-port)]
+                                 (shell (format "curl http://localhost:%s/api/todo" http-port))
+                                 (p/destroy-tree tracing-process)
+                                 ;; Wait for native-image-agent to create the tracing file
+                                 (when (= :timeout (wait/wait-for-path "target/native-image-configuration/META-INF/native-image/reachability-metadata.json"
+                                                                       {:timeout 5000
+                                                                        :default :timeout}))
+                                   (println "Reachability metadata file not created")
+                                   (System/exit 1)))
+
+                               ;; Create the native image itself
+                               (shell "native-image"
+                                      "--features=clj_easy.graal_build_time.InitClojureClasses"
+                                      ;; Logback related classes
+                                      "--initialize-at-build-time=ch.qos.logback"
+                                      "--initialize-at-build-time=ch.qos.logback.classic.Logger"
+                                      "--initialize-at-build-time=org.xml.sax"
+
+                                      ;; Don't allow to fall back to launching a VM
+                                      "--no-fallback"
+
+                                      ;; To make shutdown hooks work
+                                      "--install-exit-handlers"
+
+                                      "-H:+UnlockExperimentalVMOptions"
+                                      "-H:IncludeResources=swagger-ui/.*" ;; TODO: Should create META-INF/native-image/metosin/ring-swagger-ui/native-image.properties
+                                      "-H:+PrintClassInitialization"
+
+                                      "-cp" (str
+                                             ;; From training run with native-image-agent
+                                             "target/native-image-configuration"
+                                             ;; From https://github.com/oracle/graalvm-reachability-metadata
+                                             ":graalvm-reachability-metadata/com.zaxxer/HikariCP/5.0.1"
+                                             ":graalvm-reachability-metadata/org.postgresql/postgresql/42.7.3")
+
+                                      "-jar" "target/app.jar"
+                                      "-o" "target/app"))}
+
+         native-image-build {:doc "Builds uberjar, then native-image and runs the app for verification"
+                             :requires ([babashka.process :as p]
+                                        [babashka.wait :as wait])
+                             :task (do
+                                     (shell "bb build")
+                                     (shell "bb native-image")
+                                     (let [http-port 3333
+                                           app (p/process {:inherit true
+                                                           :extra-env {"CONFIG_EDN" "resources/config.edn"
+                                                                       "HTTP_PORT" http-port}}
+                                                          "target/app")
+                                           timeout-ms 5000]
+                                       (when (= :timeout (wait/wait-for-port "localhost" http-port
+                                                                             {:timeout timeout-ms
+                                                                              :default :timeout}))
+                                         (p/destroy-tree app)
+                                         (println "Backend didn't start in" timeout-ms "ms")
+                                         (System/exit 1))
+                                       (p/destroy-tree app)))}}}

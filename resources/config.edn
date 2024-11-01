@@ -1,4 +1,4 @@
-{:adapter/jetty {:port 3333
+{:adapter/jetty {:port #long #or [#env "HTTP_PORT" 3333]
                  :routes #ig/ref :web/routes}
  :web/routes {:db #ig/ref :database/pool}
  :database/pool {:adapter "postgresql"

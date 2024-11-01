@@ -1,6 +1,6 @@
 (ns build
-  (:require [shadow.cljs.devtools.api :as shadow]
-            [clojure.tools.build.api :as b]))
+  (:require [clojure.tools.build.api :as b]
+            [shadow.cljs.devtools.api :as shadow]))
 
 (def version "0.0.1-SNAPSHOT")
 (def class-dir "target/classes")
@@ -21,14 +21,13 @@
   ;; Build frontend:
   (shadow/release :app)
 
-  #_
   (b/compile-clj {:basis @basis
-                  :ns-compile '[backend.main]
-                  :class-dir class-dir})
+                  :class-dir class-dir
+                  :compile-opts {:direct-linking true}})
 
   (b/uber {:class-dir class-dir
            :uber-file uber-file
-           ;; :main 'backend.main
+           :main 'backend.main
            :basis @basis})
 
   (println "Uberjar:" uber-file))
