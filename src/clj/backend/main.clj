@@ -51,5 +51,8 @@
     (catch Throwable t
       (log/error t "Failed to start system"))))
 
-(defn -main []
-  (run-system (system-config)))
+(defn -main [& args]
+  (run-system (system-config))
+  (when (= "exit-after-start" (first args))
+    (log/info "Exiting")
+    (System/exit 0)))

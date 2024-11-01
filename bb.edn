@@ -30,27 +30,33 @@
                        :requires ([babashka.process :as p]
                                   [babashka.wait :as wait])
                        :task (do
-                               (defn start-backend-with-native-image-agent [http-port]
+                               (defn start-backend [{:keys [http-port extra-env timeout-ms command]}]
                                  (shell "bb db-up")
-                                 (let [timeout-ms 5000
-                                       tracing-process (p/process {:inherit true
-                                                                   :extra-env {"CONFIG_EDN" "resources/config.edn"
-                                                                               "HTTP_PORT" http-port}}
-                                                                  "java" (str "-agentlib:native-image-agent="
-                                                                              "config-output-dir=target/native-image-configuration/META-INF/native-image")
-                                                                  "-jar" "target/app.jar")]
+                                 (let [command (if (string? command)
+                                                 [command]
+                                                 command)
+                                       backend-process (apply p/process
+                                                              {:inherit true
+                                                               :extra-env extra-env}
+                                                              command)]
                                    (when (= :timeout (wait/wait-for-port "localhost" http-port
                                                                          {:timeout timeout-ms
                                                                           :default :timeout}))
-                                     (p/destroy-tree tracing-process)
+                                     (p/destroy-tree backend-process)
                                      (throw (Exception. (str "Backend didn't start in " timeout-ms "ms"))))
-                                   tracing-process))
+                                   backend-process))
 
                                ;; Do a training run to gather metadata via native-image-agent
                                ;; Note that should not refer to any unnecessary test resources on the classpath during training,
                                ;; since those will get included into the metadata
                                (let [http-port 3322
-                                     tracing-process (start-backend-with-native-image-agent http-port)]
+                                     tracing-process (start-backend {:http-port http-port
+                                                                     :extra-env {"CONFIG_EDN" "resources/config.edn"
+                                                                                 "HTTP_PORT" http-port}
+                                                                     :timeout-ms 5000
+                                                                     :command ["java" (str "-agentlib:native-image-agent="
+                                                                                           "config-output-dir=target/native-image-configuration/META-INF/native-image")
+                                                                               "-jar" "target/app.jar"]})]
                                  (shell (format "curl http://localhost:%s/api/todo" http-port))
                                  (p/destroy-tree tracing-process)
                                  ;; Wait for native-image-agent to create the tracing file
@@ -89,21 +95,9 @@
                                       "-o" "target/app"))}
 
          native-image-build {:doc "Builds uberjar, then native-image and runs the app for verification"
-                             :requires ([babashka.process :as p]
-                                        [babashka.wait :as wait])
                              :task (do
                                      (shell "bb build")
                                      (shell "bb native-image")
-                                     (let [http-port 3333
-                                           app (p/process {:inherit true
-                                                           :extra-env {"CONFIG_EDN" "resources/config.edn"
-                                                                       "HTTP_PORT" http-port}}
-                                                          "target/app")
-                                           timeout-ms 5000]
-                                       (when (= :timeout (wait/wait-for-port "localhost" http-port
-                                                                             {:timeout timeout-ms
-                                                                              :default :timeout}))
-                                         (p/destroy-tree app)
-                                         (println "Backend didn't start in" timeout-ms "ms")
-                                         (System/exit 1))
-                                       (p/destroy-tree app)))}}}
+                                     (shell {:extra-env {"CONFIG_EDN" "resources/config.edn"
+                                                         "HTTP_PORT" 3333}}
+                                            "target/app exit-after-start"))}}}
