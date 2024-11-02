@@ -32,8 +32,6 @@
   ;; receive java.time.Instant from JDBC
   (next.jdbc.date-time/read-as-instant)
 
-  ;; Hint for GraalVM native-image to register postgresql jdbc driver
-  (java.sql.DriverManager/registerDriver (org.postgresql.Driver.))
   (hikari-cp/make-datasource jdbc-options))
 
 (defmethod ig/halt-key! :database/pool [_ pool]

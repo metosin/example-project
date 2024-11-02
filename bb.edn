@@ -84,12 +84,8 @@
                                       "-H:IncludeResources=swagger-ui/.*" ;; TODO: Should create META-INF/native-image/metosin/ring-swagger-ui/native-image.properties
                                       "-H:+PrintClassInitialization"
 
-                                      "-cp" (str
-                                             ;; From training run with native-image-agent
-                                             "target/native-image-configuration"
-                                             ;; From https://github.com/oracle/graalvm-reachability-metadata
-                                             ":graalvm-reachability-metadata/com.zaxxer/HikariCP/5.0.1"
-                                             ":graalvm-reachability-metadata/org.postgresql/postgresql/42.7.3")
+                                      ;; From training run with native-image-agent
+                                      "-cp" "target/native-image-configuration"
 
                                       "-jar" "target/app.jar"
                                       "-o" "target/app"))}
