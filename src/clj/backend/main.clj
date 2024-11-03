@@ -10,6 +10,8 @@
             [ring.adapter.jetty :as jetty])
   (:gen-class))
 
+(set! *warn-on-reflection* true)
+
 (defmethod aero.core/reader 'ig/ref
   [_opts _tag value]
   (ig/ref value))

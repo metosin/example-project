@@ -1,4 +1,5 @@
-{:tasks {build {:doc "Build uberjar"
+{:paths ["src/babashka"]
+ :tasks {build {:doc "Build uberjar"
                 ;; FIXME: Consider if it would be better to handle Cljs build in separate classpath
                 :task (clojure "-T:shadow-cljs:frontend:backend:build uberjar")}
          outdated {:doc "Check depdendencies"
@@ -26,74 +27,16 @@
          db-down {:doc "Stop the database"
                   :task (shell "docker compose -p example-project down -d")}
 
-         native-image {:doc "Create native image"
-                       :requires ([babashka.process :as p]
-                                  [babashka.wait :as wait])
-                       :task (do
-                               (defn start-backend [{:keys [http-port extra-env timeout-ms command]}]
-                                 (shell "bb db-up")
-                                 (let [command (if (string? command)
-                                                 [command]
-                                                 command)
-                                       backend-process (apply p/process
-                                                              {:inherit true
-                                                               :extra-env extra-env}
-                                                              command)]
-                                   (when (= :timeout (wait/wait-for-port "localhost" http-port
-                                                                         {:timeout timeout-ms
-                                                                          :default :timeout}))
-                                     (p/destroy-tree backend-process)
-                                     (throw (Exception. (str "Backend didn't start in " timeout-ms "ms"))))
-                                   backend-process))
-
-                               ;; Do a training run to gather metadata via native-image-agent
-                               ;; Note that should not refer to any unnecessary test resources on the classpath during training,
-                               ;; since those will get included into the metadata
-                               (let [http-port 3322
-                                     tracing-process (start-backend {:http-port http-port
-                                                                     :extra-env {"CONFIG_EDN" "resources/config.edn"
-                                                                                 "HTTP_PORT" http-port}
-                                                                     :timeout-ms 5000
-                                                                     :command ["java" (str "-agentlib:native-image-agent="
-                                                                                           "config-output-dir=target/native-image-configuration/META-INF/native-image")
-                                                                               "-jar" "target/app.jar"]})]
-                                 (shell (format "curl http://localhost:%s/api/todo" http-port))
-                                 (p/destroy-tree tracing-process)
-                                 ;; Wait for native-image-agent to create the tracing file
-                                 (when (= :timeout (wait/wait-for-path "target/native-image-configuration/META-INF/native-image/reachability-metadata.json"
-                                                                       {:timeout 5000
-                                                                        :default :timeout}))
-                                   (println "Reachability metadata file not created")
-                                   (System/exit 1)))
-
-                               ;; Create the native image itself
-                               (shell "native-image"
-                                      "--features=clj_easy.graal_build_time.InitClojureClasses"
-                                      ;; Logback related classes
-                                      "--initialize-at-build-time=ch.qos.logback"
-                                      "--initialize-at-build-time=ch.qos.logback.classic.Logger"
-                                      "--initialize-at-build-time=org.xml.sax"
-
-                                      ;; Don't allow to fall back to launching a VM
-                                      "--no-fallback"
-
-                                      ;; To make shutdown hooks work
-                                      "--install-exit-handlers"
-
-                                      "-H:+UnlockExperimentalVMOptions"
-                                      "-H:IncludeResources=swagger-ui/.*" ;; TODO: Should create META-INF/native-image/metosin/ring-swagger-ui/native-image.properties
-                                      "-H:+PrintClassInitialization"
-
-                                      ;; From training run with native-image-agent
-                                      "-cp" "target/native-image-configuration"
-
-                                      "-jar" "target/app.jar"
-                                      "-o" "target/app"))}
-
-         native-image-build {:doc "Builds uberjar, then native-image and runs the app for verification"
+         native-image-agent {:doc      "Run backend with native-image-agent to collect metadata for building a native image"
+                             :requires ([native-image :as n])
+                             :task     (n/run-with-agent)}
+         native-image       {:doc  "Build native image"
+                             :task (shell "clojure -T:build:shadow-cljs native-image")}
+         native-image-build {:doc  "Builds uberjar, then native-image and runs the app for verification"
                              :task (do
                                      (shell "bb build")
+                                     (shell "bb native-image-agent")
                                      (shell "bb native-image")
                                      (shell {:extra-env {"CONFIG_EDN" "resources/config.edn"
-                                                         "HTTP_PORT" 3333}}
+                                                         "HTTP_PORT"  3333}}
                                             "target/app exit-after-start"))}}}
