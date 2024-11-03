@@ -19,7 +19,8 @@
                          ;; Hugsql
                          hikari-cp/hikari-cp {:mvn/version "3.1.0"}
                          migratus/migratus {:mvn/version "1.5.8"}
-                         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
+                         #_#_ring/ring-jetty-adapter {:mvn/version "1.12.2"}
+                         info.sunng/ring-jetty9-adapter {:mvn/version "0.35.1"}
                          metosin/ring-swagger-ui {:mvn/version "5.17.14"}
                          metosin/ring-http-response {:mvn/version "0.9.4"}
                          metosin/muuntaja {:mvn/version "0.6.10"}

@@ -40,15 +40,18 @@
       (prn failure))
     (System/exit 1)))
 
-(defn remove-clojure-name [coll clojure-names]
+(defn remove-clojure-name [coll clojure-names keeps]
   (remove (fn [{:keys [type glob]}]
             (let [s (or glob
                         (when (and type
                                    (string? type))
                           type))]
               (if s
-                (some #(or (.startsWith s %)
-                           (.contains s %))
+                (some #(and (or (.startsWith s %)
+                                (.contains s %))
+                            (not (some (fn [k]
+                                         (.contains % k))
+                                       keeps)))
                       clojure-names)
                 false)))
           coll))
@@ -74,9 +77,9 @@
                      o)
                    data)
     (let [new-data (-> data
-                       (update :reflection #(remove-clojure-name % @clojure-names-atom))
-                       (update :resources #(remove-clojure-name % @clojure-names-atom))
-                       (update :jni #(remove-clojure-name % @clojure-names-atom)))]
+                       (update :reflection #(remove-clojure-name % @clojure-names-atom #{"jetty9"})) ;; To support ring-jetty9-adapter
+                       (update :resources #(remove-clojure-name % @clojure-names-atom #{}))
+                       (update :jni #(remove-clojure-name % @clojure-names-atom #{})))]
       (spit filename (json/generate-string new-data {:pretty true})))))
 
 ;; Do a training run to gather metadata via native-image-agent

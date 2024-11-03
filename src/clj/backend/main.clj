@@ -7,7 +7,8 @@
             [integrant.core :as ig]
             [next.jdbc.date-time]
             [reitit.ring.middleware.exception]
-            [ring.adapter.jetty :as jetty])
+            [ring.adapter.jetty9 :as jetty]
+            #_[ring.adapter.jetty :as jetty])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
