@@ -68,9 +68,6 @@
            ;; To make shutdown hooks work
            "--install-exit-handlers"
 
-           ;; Try to make ring-jetty9-adapter work
-           "--initialize-at-build-time=ring.adapter.jetty9"
-
            #_"--initialize-at-run-time=buddy.core.bytes__init"
            #_"--initialize-at-run-time=clojure.math__init"
 
