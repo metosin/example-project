@@ -68,9 +68,6 @@
            ;; To make shutdown hooks work
            "--install-exit-handlers"
 
-           #_"--initialize-at-run-time=buddy.core.bytes__init"
-           #_"--initialize-at-run-time=clojure.math__init"
-
            "-H:+UnlockExperimentalVMOptions"
            "-H:IncludeResources=swagger-ui/.*" ;; TODO: Should create META-INF/native-image/metosin/ring-swagger-ui/native-image.properties
 
