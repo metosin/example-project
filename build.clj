@@ -1,11 +1,9 @@
 (ns build
   (:require [babashka.process :as p]
-            [babashka.fs :as fs]
-            babashka.process.pprint
+            [babashka.process.pprint]
             [clojure.tools.build.api :as b]
             [shadow.cljs.devtools.api :as shadow]))
 
-(def version "0.0.1-SNAPSHOT")
 (def class-dir "target/classes")
 (def uber-file "target/app.jar")
 
@@ -16,6 +14,7 @@
 (defn clean [_]
   (b/delete {:path "target"}))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn uberjar [_]
   (clean nil)
   (b/copy-dir {:src-dirs ["src/clj" "src/cljc" "resources"]
@@ -35,6 +34,8 @@
 
   (println "Uberjar:" uber-file))
 
+
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn native-image [_]
   (println "Compiling GraalVM feature classes")
   (b/javac {:src-dirs ["src/java"]
