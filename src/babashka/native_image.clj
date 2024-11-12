@@ -25,7 +25,9 @@
 
 (defn run-training [http-port]
   (let [base-url (format "http://localhost:%s" http-port)
-        test-requests [[200 (str base-url "/api/todo")]
+        test-requests [;; Database access
+                       [200 (str base-url "/api/todo")]
+                       ;; Buddy
                        [200 (str base-url "/api/buddy-test")]]]
     (doall (keep (fn [[expected-status url]]
                    (let [response (http/get url {:throw false})]
