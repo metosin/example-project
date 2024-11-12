@@ -43,10 +43,6 @@
             :javac-opts ["--add-exports" "org.graalvm.nativeimage/org.graalvm.nativeimage.impl=ALL-UNNAMED"
                          "-Xlint:deprecation"]})
 
-  ;; Copy reachability metadata into classpath
-  (doseq [path (fs/list-dir "graalvm-reachability-metadata/metadata")]
-    (fs/copy-tree path "target/native-image-configuration/META-INF/native-image"))
-
   (println "Building native image")
   (p/shell "native-image"
 
