@@ -68,6 +68,12 @@
            ;; To make shutdown hooks work
            "--install-exit-handlers"
 
+           "--enable-monitoring"
+
+           "--emit" "build-report=native-image-build-report.html"
+
+           "--enable-sbom=export"
+
            "-H:+UnlockExperimentalVMOptions"
            "-H:IncludeResources=swagger-ui/.*" ;; TODO: Should create META-INF/native-image/metosin/ring-swagger-ui/native-image.properties
 
