@@ -39,4 +39,9 @@
                                      (shell "bb native-image")
                                      (shell {:extra-env {"CONFIG_EDN" "resources/config.edn"
                                                          "HTTP_PORT"  3333}}
-                                            "target/app exit-after-start"))}}}
+                                            "target/app exit-after-start"))}
+
+         dev {:doc "Start backend development environment"
+              :task (do
+                      (run 'db-up)
+                      (shell "clojure -A:backend:dev:repl:build:shadow-cljs"))}}}

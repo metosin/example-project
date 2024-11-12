@@ -1,5 +1,6 @@
 (ns user
-  (:require [integrant.repl :refer [clear go halt prep init reset reset-all]]
+  (:require [hashp.core]
+            [integrant.repl :refer [clear go halt prep init reset reset-all]]
             [integrant.repl.state :as state]
             [migratus.core :as migratus]))
 
