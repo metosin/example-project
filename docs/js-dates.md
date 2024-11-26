@@ -13,8 +13,8 @@ Cons:
   even if app would only need `Instant` or something. Due to static property
   initialization and dependencies between classes it looks like it isn't possible
   to only require single class (at least easily?).
-- 43 kB minified and compressed (advertiser), not huge, but more than many other
-  date libs
+- 43 kB minified and compressed (advertised in readme, could be a bit different
+- with Closure), not huge, but more than some other date libs.
 - No MUI DatePicker adapter (could be added?)
 
 ## https://day.js.org/en/
