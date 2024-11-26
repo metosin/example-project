@@ -1,5 +1,7 @@
 # Opinionated example project
 
+Last used to bootstrap a Metosin project: 2024-11
+
 Confidence level explanation:
 - Very high, high: I strongly believe this is the best choice nearly always
 - Medium: Should be a good choice, there could be cases where other choices are better
@@ -32,7 +34,7 @@ Confidence level explanation:
 | [Icons](./docs/icons.md) | | Use JS libs and svg files (for custom icons) |
 | Reitit-frontend | Medium? | Good enough? It is used in most projects already. |
 | Malli | High | If/when needed for FE route parameter validation or any other schema validations. |
-| Date lib? Js-joda? Day-js or something? | Medium? | Moment is kind of old now. Closure Library is deprecated. |
+| [Date lib? Js-joda? Day-js or something?](./docs/js-dates.md) | Medium? | Moment is kind of old now. Closure Library is deprecated. |
 | MAYBE: TanStack Query | Low? Medium? | Useful abstraction for making calls to backend. Some challenges on using this together with Re-frame (and some with Cljs, but mostly solved.) |
 | [Test runner](./docs/test.md) | Medium | Shadow-cljs can build unit test artifact, run in browser or with Karma |
 
