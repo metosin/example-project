@@ -1,7 +1,11 @@
 # Editors
 
-In general, the required nrepl middleware depends on the used middleware,
-so if possible, it is best to not include it in the repo.
+In general, the required nrepl middleware depends on the used editor,
+so if possible, it is best to not include it in the repo. Or else you
+might have to add all the different configuration combinations to the repo.
+
+(OK, including the iced nrepl middleware shouldn't affect Cider and others
+so one nrepl alias with all the middleware might work?)
 
 TODO: Does this work always? Are there cases where it would be better to
 include the config in the repo?
