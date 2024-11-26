@@ -37,10 +37,6 @@
   (log/infof "Shutting down DB pool")
   (hikari-cp/close-datasource pool))
 
-(defmethod ig/halt-key! :database/pool [_ pool]
-  (log/infof "Shutting down DB pool")
-  (hikari-cp/close-datasource pool))
-
 (defn run-system [config]
   (try
     (let [initialized-system (ig/init config)]
