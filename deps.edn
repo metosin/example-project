@@ -38,7 +38,13 @@
            {:extra-paths ["dev/clj" "target/dev" "test/clj"]}
 
            :repl
-           {:extra-deps {}}
+           {:extra-deps {;; Need 1.2+ for Java 20+ interrupt
+                         nrepl/nrepl {:mvn/version "1.3.0"}}
+            :jvm-opts [;; https://www.metosin.fi/blog/missing-stacktraces
+                       "-XX:-OmitStackTraceInFastThrow"
+                       ;; To allow nrepl interrupt threads on Java 20+
+                       "-Djdk.attach.allowAttachSelf"
+                       "-XX:+EnableDynamicAgentLoading"]}
 
            :test
            {:extra-paths ["test/clj"]
