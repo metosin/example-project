@@ -13,10 +13,14 @@ that use LSP (Vim, Emacs, VS Code).
 
 ### [Vim-iced](https://liquidz.github.io/vim-iced/#quick_start)
 
+Start the nREPL process and the app in a separate terminal (or in a terminal
+buffer Neovim if you want to).
+
 `iced repl A:backend:dev:repl`
 
-This command will start nREPL server with required middleware (cider, iced)
-and using the clj aliases specified in the command.
+This command will start a nREPL server with the required middleware (cider, iced)
+and using the clj aliases specified in the command. Iced will then connect
+to this nREPL using `.nrepl-port` file.
 
 ## Emacs
 
