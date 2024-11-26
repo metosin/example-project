@@ -44,8 +44,9 @@ Open questions?
     - Chakra UI
     - Theme UI
 
-## Code style
+## Code style and tooling
 
+- [Editors](./docs/editors.md)
 - [Clj-kondo config](./.clj-kondo/config.edn)
 - [Clojure-LSP config](./.lsp/config.edn)
 
