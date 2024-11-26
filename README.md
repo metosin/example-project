@@ -50,6 +50,16 @@ Open questions?
 - [Clj-kondo config](./.clj-kondo/config.edn)
 - [Clojure-LSP config](./.lsp/config.edn)
 
+## Variants
+
+Branches and pull requests can be used to provide some additional examples
+for cases we don't want to merge to the master branch. The diff should be
+kept as simple as possible, so it is easy to merge master changes back the
+branch.
+
+- [Native image](https://github.com/metosin/example-project/pull/1)
+    - Example to build a native image of the app
+
 ## Deployment
 
 - Create uberjar: `bb build`
