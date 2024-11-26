@@ -1,0 +1,5 @@
+{;; Example .user.edn file to configure :repl-command for bb.edn
+ ;; Vim-iced
+ :repl-command ["iced repl -A:backend:dev:repl"]
+ ;; TODO: Others
+ }
