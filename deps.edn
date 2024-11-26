@@ -19,7 +19,8 @@
                          ;; Hugsql
                          hikari-cp/hikari-cp {:mvn/version "3.1.0"}
                          migratus/migratus {:mvn/version "1.5.8"}
-                         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
+                         #_#_ring/ring-jetty-adapter {:mvn/version "1.12.2"}
+                         info.sunng/ring-jetty9-adapter {:mvn/version "0.35.1"}
                          metosin/ring-swagger-ui {:mvn/version "5.17.14"}
                          metosin/ring-http-response {:mvn/version "0.9.4"}
                          metosin/muuntaja {:mvn/version "0.6.10"}
@@ -30,7 +31,14 @@
                          ;; org.apache.logging.log4j/log4j-to-slf4j {:mvn/version "2.23.1"}
                          ;; org.slf4j/jul-to-slf4j {:mvn/version "2.0.16"}
                          ;; org.slf4j/jcl-over-slf4j {:mvn/version "2.0.16"}
-                         org.clojure/tools.logging {:mvn/version "1.3.0"}}}
+                         org.clojure/tools.logging {:mvn/version "1.3.0"}
+
+                         ;; For native-image, used by --features=clj_easy.graal_build_time.InitClojureClasses
+                         com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}
+
+                         ;; For showing how to make buddy work in native-image
+                         buddy/buddy-sign {:mvn/version "3.5.351"}
+                         buddy/buddy-core {:mvn/version "1.11.423"}}}
 
            :dev
            ;; Include test folder here for REPL,
@@ -38,7 +46,15 @@
            {:extra-paths ["dev/clj" "target/dev" "test/clj"]}
 
            :repl
-           {:extra-deps {}}
+           {:extra-deps {cider/cider-nrepl          {:mvn/version "0.50.2"}
+                         nrepl/nrepl                {:mvn/version "1.3.0"}
+                         com.bhauman/rebel-readline {:mvn/version "0.1.4"}
+
+                         hashp/hashp {:mvn/version "0.2.2"}}
+            :main-opts ["-m" "nrepl.cmdline"
+                        "--middleware" "[cider.nrepl/cider-middleware]"
+                        "--interactive"
+                        "--repl-fn" "rebel-readline.main/-main"]}
 
            :test
            {:extra-paths ["test/clj"]
@@ -64,8 +80,13 @@
                          org.slf4j/slf4j-simple {:mvn/version "2.0.16"}}}
 
            :build
-           {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}}
-            :ns-default build}
+           {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}
+
+                   babashka/process {:mvn/version "0.5.22"}
+                   babashka/fs      {:mvn/version "0.5.22"}}
+
+            :ns-default build
+            :jvm-opts   ["-XX:-OmitStackTraceInFastThrow" "-Dclojure.main.report=stderr"]}
 
            :outdated
            {:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}
