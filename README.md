@@ -1,5 +1,7 @@
 # Opinionated example project
 
+Last used to bootstrap a Metosin project: 2024-11
+
 Confidence level explanation:
 - Very high, high: I strongly believe this is the best choice nearly always
 - Medium: Should be a good choice, there could be cases where other choices are better
