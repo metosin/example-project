@@ -37,6 +37,7 @@ Confidence level explanation:
 | [Date lib? Js-joda? Day-js or something?](./docs/js-dates.md) | Medium? | Moment is kind of old now. Closure Library is deprecated. |
 | MAYBE: TanStack Query | Low? Medium? | Useful abstraction for making calls to backend. Some challenges on using this together with Re-frame (and some with Cljs, but mostly solved.) |
 | [Test runner](./docs/test.md) | Medium | Shadow-cljs can build unit test artifact, run in browser or with Karma |
+| [Async helpers: Promesa](./docs/async.md) | High | IF you need lots of async code, Promesa provides nice abstracting and helpers. Avoid core.async. |
 
 Open questions?
 - Forms
