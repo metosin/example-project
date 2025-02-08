@@ -23,14 +23,13 @@
   (b/copy-dir {:src-dirs ["target/release"]
                :target-dir class-dir})
 
-  #_
   (b/compile-clj {:basis @basis
-                  :ns-compile '[backend.main]
-                  :class-dir class-dir})
+                  :class-dir class-dir
+                  :compile-opts {:direct-linking true}})
 
   (b/uber {:class-dir class-dir
            :uber-file uber-file
-           ;; :main 'backend.main
+           :main 'backend.main
            :basis @basis})
 
   (println "Uberjar:" uber-file))

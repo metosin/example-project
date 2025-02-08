@@ -8,7 +8,8 @@
             [integrant.core :as ig]
             [next.jdbc.date-time]
             [reitit.ring.middleware.exception]
-            [ring.adapter.jetty :as jetty]))
+            [ring.adapter.jetty :as jetty])
+  (:gen-class))
 
 (defmethod aero.core/reader 'ig/ref
   [_opts _tag value]
