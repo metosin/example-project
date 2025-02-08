@@ -20,6 +20,8 @@
 
   ;; Build frontend:
   (shadow/release :app)
+  (b/copy-dir {:src-dirs ["target/release"]
+               :target-dir class-dir})
 
   #_
   (b/compile-clj {:basis @basis
