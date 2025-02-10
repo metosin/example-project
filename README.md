@@ -65,3 +65,7 @@ branch.
 
 - Create uberjar: `bb build`
 - Create docker image: `docker build .`
+
+- NOTE: Run uberjar with `java -cp app.jar clojure.main -m backend.main`
+- AOT compilation of the app code is not enabled, so backend.main class isn't
+  available on the classpath

@@ -15,11 +15,12 @@
 
 (defn uberjar [_]
   (clean nil)
-  (b/copy-dir {:src-dirs ["src/clj" "src/cljc" "resources"]
-               :target-dir class-dir})
 
   ;; Build frontend:
   (shadow/release :app)
+
+  (b/copy-dir {:src-dirs ["src/clj" "src/cljc" "resources" "target/release"]
+               :target-dir class-dir})
 
   #_
   (b/compile-clj {:basis @basis
