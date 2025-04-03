@@ -28,7 +28,19 @@ to this nREPL using `.nrepl-port` file.
 
 ## Emacs
 
-TODO: [Cider](https://cider.mx/)
+### [Cider](https://cider.mx/)
+
+Add `.dir-locals.el` [Dir locals](https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html)
+
+```elisp
+((nil . ((cider-clojure-cli-aliases . ":backend:dev:repl")
+         (cider-default-cljs-repl . shadow)
+         (cider-shadow-default-options . ":app")
+         (cider-shadow-cljs-watched-builds . ("app")))))
+```
+
+Then start the cljs build with `cider-jack-in-cljs` using shadow-cljs
+and `cider-jack-in-clj` using clojure-cli.
 
 ## VS Code
 
