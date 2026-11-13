@@ -7,15 +7,22 @@
             [common.schema :as schema]
             [hiccup2.core :as hiccup]
             [integrant.core :as ig]
+            ;; JSON Schema (OpenAPI) mappings for :time/* schemas
+            [malli.experimental.time.json-schema]
+            [malli.json-schema :as json-schema]
             [muuntaja.core :as m]
             [reitit.coercion.malli :as malli.coercion]
+            [reitit.openapi :as openapi]
             [reitit.ring :as ring]
             [reitit.ring.coercion :as ring.coercion]
             [reitit.ring.middleware.exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
-            [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [ring.util.http-response :as resp]))
+
+;; malli.experimental.time.json-schema doesn't cover :time/instant.
+;; Instants are serialized as ISO-8601 strings in JSON.
+(defmethod json-schema/accept :time/instant [_ _ _ _] {:type "string" :format "date-time"})
 
 (def muuntaja-instance
   (m/create (-> m/default-options
@@ -72,10 +79,11 @@
       ["/api"
        ["/todo"
         [""
-         {:summary "Return a list of todo items"
-          :get {:handler #'todo/get-todos
+         {:get {:summary "Return a list of todo items"
+                :handler #'todo/get-todos
                 :responses {200 {:body [:sequential schema/todo]}}}
-          :post {:handler #'todo/create-todo
+          :post {:summary "Create a todo item"
+                 :handler #'todo/create-todo
                  :responses {200 {:body schema/todo}}
                  :parameters {:body schema/new-todo}}}]
         ["/:id"
@@ -84,10 +92,12 @@
                 :responses {200 {:body schema/todo}}
                 :handler #'todo/update-todo}
           :delete {:handler #'todo/delete-todo}}]]
-       ["/swagger.json" {:no-doc true
-                         :get (swagger/create-swagger-handler)}]
+       ["/openapi.json" {:no-doc true
+                         :get {:openapi {:info {:title "Example API"
+                                                :version "1.0.0"}}
+                               :handler (openapi/create-openapi-handler)}}]
        ["/docs/*" {:no-doc true
-                   :get (swagger-ui/create-swagger-ui-handler {:url "/api/swagger.json"})}]]
+                   :get (swagger-ui/create-swagger-ui-handler {:url "/api/openapi.json"})}]]
       {:data {:muuntaja muuntaja-instance
               :coercion malli.coercion/coercion
               :middleware [muuntaja/format-middleware
