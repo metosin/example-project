@@ -14,6 +14,7 @@ Confidence level explanation:
 | Integrant | Very high | |
 | Reitit | Very high | |
 | Malli | Very high | |
+| OpenAPI 3 (reitit-openapi) | High | API docs at `/api/openapi.json`, Swagger UI at `/api/docs/`. Use OpenAPI 3 instead of Swagger 2 (`reitit-swagger`). |
 | Next.jdbc | Very high | |
 | Honeysql v2 | High | Can be useful to generate dynamic SQL queries |
 | HugSQL | High | Can be useful when writing SQL by hand |
