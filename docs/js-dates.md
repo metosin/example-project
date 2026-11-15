@@ -2,6 +2,12 @@
 
 https://mui.com/x/react-date-pickers/base-concepts/#date-library
 
+## [date-fns](https://date-fns.org/)
+
+- Simple API, pure functions, immutable.
+- Locales and formatting seem to work.
+- TODO: Test what is the artifact size in shadow-cljs bundle.
+
 ## https://github.com/js-joda/js-joda
 
 Port of JSR-310 i.e. the Java.time implementation, so this has all the
