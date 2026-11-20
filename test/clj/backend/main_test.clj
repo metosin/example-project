@@ -5,3 +5,6 @@
 (deftest system-config-test
   (is (= #{:adapter/jetty :web/routes :database/pool}
          (set (keys (sut/system-config))))))
+
+(deftest example-test
+  (is (= 1 1)))

@@ -4,3 +4,6 @@
 
 (deftest init-test
   (is (fn? sut/init)))
+
+(deftest example-test
+  (is (= 1 1)))
