@@ -1,0 +1,35 @@
+name: dependency-submission
+
+# GitHub's dependency graph doesn't understand deps.edn, so generate a
+# pom.xml and submit the resolved Maven dependency tree. This lets Dependabot
+# alerts cover the backend runtime dependencies, incl. transitive ones.
+# npm dependencies are read from package-lock.json by GitHub directly.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  submit:
+    name: Submit dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: 17
+      - name: Setup Clojure
+        uses: DeLaGuardo/setup-clojure@13.7.0
+        with:
+          cli: 1.12.7.1681
+      - name: Generate pom.xml
+        # Only the :backend alias, i.e. what ends up in the uberjar
+        run: clojure -X:deps mvn-pom :aliases '[:backend]'
+      - name: Submit dependency snapshot
+        uses: advanced-security/maven-dependency-submission-action@v6.0.1

@@ -51,6 +51,13 @@ Open questions?
 - [Editors](./docs/editors.md)
 - [Clj-kondo config](./.clj-kondo/config.edn)
 - [Clojure-LSP config](./.lsp/config.edn)
+- [CI (GitHub Actions)](./.github/workflows/ci.yml): clj-kondo, Clojure tests
+  against Postgres, ClojureScript tests with Karma, uberjar build
+- [Dependency submission](./.github/workflows/dependency-submission.yml):
+  `pom.xml` generated from `deps.edn` is submitted to GitHub's dependency
+  graph, so Dependabot alerts cover the Clojure deps (npm deps are read from
+  `package-lock.json` directly). Dependabot alerts need to be enabled in the
+  repository settings.
 
 ## Variants
 
