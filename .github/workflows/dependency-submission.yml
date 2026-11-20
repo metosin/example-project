@@ -10,6 +10,11 @@ on:
     branches: [master]
   workflow_dispatch:
 
+env:
+  # Keep in sync with ci.yml
+  JAVA_VERSION: 17
+  CLOJURE_CLI_VERSION: 1.12.7.1681
+
 permissions:
   contents: write
 
@@ -23,11 +28,11 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: zulu
-          java-version: 17
+          java-version: ${{ env.JAVA_VERSION }}
       - name: Setup Clojure
         uses: DeLaGuardo/setup-clojure@13.7.0
         with:
-          cli: 1.12.7.1681
+          cli: ${{ env.CLOJURE_CLI_VERSION }}
       - name: Generate pom.xml
         # Only the :backend alias, i.e. what ends up in the uberjar
         run: clojure -X:deps mvn-pom :aliases '[:backend]'
