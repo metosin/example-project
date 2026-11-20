@@ -1,8 +1,8 @@
 (ns common.schema
   (:require [malli.core :as m]
-            [malli.util :as mu]
             [malli.experimental.time :as malli.time]
-            [malli.registry :as malli.registry]))
+            [malli.registry :as malli.registry]
+            [malli.util :as mu]))
 
 (malli.registry/set-default-registry!
   (malli.registry/composite-registry

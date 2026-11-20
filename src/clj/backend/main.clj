@@ -34,16 +34,16 @@
   (hikari-cp/make-datasource jdbc-options))
 
 (defmethod ig/halt-key! :database/pool [_ pool]
-  (log/infof "Shutting down DB pool")
+  (log/info "Shutting down DB pool")
   (hikari-cp/close-datasource pool))
 
 (defn run-system [config]
   (try
     (let [initialized-system (ig/init config)]
       (.addShutdownHook (Runtime/getRuntime) (Thread. (fn []
-                                                        (log/infof "Shutting down")
+                                                        (log/info "Shutting down")
                                                         (ig/halt! initialized-system))))
-      (log/infof "System started")
+      (log/info "System started")
       initialized-system)
     (catch Throwable t
       (log/error t "Failed to start system"))))

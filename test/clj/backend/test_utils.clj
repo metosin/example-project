@@ -26,7 +26,7 @@
 
 (comment
   ;; You should run this before running tests from REPL after adding a migration
-  (ensure-template-db))
+  (ensure-template-db!))
 
 (defn ensure-test-db!
   []
