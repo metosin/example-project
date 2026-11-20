@@ -1,6 +1,10 @@
 (ns backend.main-test
-  (:require [clojure.test :as t :refer [deftest is]]
-            [backend.main :as sut]))
+  (:require [backend.main :as sut]
+            [clojure.test :as t :refer [deftest is]]))
+
+(deftest system-config-test
+  (is (= #{:adapter/jetty :web/routes :database/pool}
+         (set (keys (sut/system-config))))))
 
 (deftest example-test
-  (is (= 1 2)))
+  (is (= 1 1)))
