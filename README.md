@@ -35,7 +35,7 @@ Confidence level explanation:
 | [Icons](./docs/icons.md) | | Use JS libs and svg files (for custom icons) |
 | Reitit-frontend | Medium? | Good enough? It is used in most projects already. |
 | Malli | High | If/when needed for FE route parameter validation or any other schema validations. |
-| [Date-fns](./docs/js-dates.md) | Medium? | Moment is kind of old now. Closure Library is deprecated. Date-fns over JS-Joda: much lighter (~4 kB vs. ~195 kB in the release build when only parsing dates), locales and formatting seem good. |
+| [Date-fns](./docs/js-dates.md) | Medium | Moment is kind of old now. Closure Library is deprecated. Date-fns over JS-Joda: much lighter (~4 kB vs. ~195 kB in the release build when only parsing dates), locales and formatting seem good. Works on plain JS `Date`, so backend `Instant`s lose sub-millisecond precision. |
 | MAYBE: TanStack Query | Low? Medium? | Useful abstraction for making calls to backend. Some challenges on using this together with Re-frame (and some with Cljs, but mostly solved.) |
 | [Test runner](./docs/test.md) | Medium | Shadow-cljs can build unit test artifact, run in browser or with Karma |
 | [Async helpers: Promesa](./docs/async.md) | High | IF you need lots of async code, Promesa provides nice abstracting and helpers. Avoid core.async. |
