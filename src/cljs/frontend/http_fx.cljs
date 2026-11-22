@@ -11,6 +11,8 @@
 ;;   eransit and reusable events to store request status.
 
 ;; java.time.Instant values are read as JS Date objects (millisecond precision).
+;; Unlike js-joda's Instant/parse, parseISO doesn't throw on a malformed string
+;; but returns an Invalid Date. The backend always writes Instant.toString.
 (def r (transit/reader :json
                        {:handlers {"Instant" (transit/read-handler #(parseISO %))}}))
 
