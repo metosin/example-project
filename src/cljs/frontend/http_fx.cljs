@@ -1,5 +1,5 @@
 (ns frontend.http-fx
-  (:require ["@js-joda/core" :refer [Instant]]
+  (:require ["date-fns/parseISO" :refer [parseISO]]
             [cognitect.transit :as transit]
             [re-frame.core :as rf]
             [superstructor.re-frame.fetch-fx :as fetch-fx]))
@@ -10,8 +10,9 @@
 ;; - Re-frame-fetch-fx looks somewhat OK -> use that as basis, extend it with
 ;;   eransit and reusable events to store request status.
 
+;; java.time.Instant values are read as JS Date objects (millisecond precision).
 (def r (transit/reader :json
-                       {:handlers {"Instant" (transit/read-handler #(.parse Instant %))}}))
+                       {:handlers {"Instant" (transit/read-handler #(parseISO %))}}))
 
 (defn read-transit [s]
   (transit/read r s))
