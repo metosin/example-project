@@ -6,6 +6,6 @@
   (let [x (sut/read-transit "[\"~#Instant\",\"2024-10-01T12:34:56.123456Z\"]")]
     (is (instance? js/Date x))
     (is (= "2024-10-01T12:34:56.123Z" (.toISOString x))))
-  (is (= [{:created-at "2024-10-01T12:34:56.000Z"}]
-         (map #(update % :created-at (fn [d] (.toISOString d)))
-              (sut/read-transit "[[\"^ \",\"~:created-at\",[\"~#Instant\",\"2024-10-01T12:34:56Z\"]]]")))))
+  (let [d (:created-at (first (sut/read-transit "[[\"^ \",\"~:created-at\",[\"~#Instant\",\"2024-10-01T12:34:56Z\"]]]")))]
+    (is (instance? js/Date d))
+    (is (= "2024-10-01T12:34:56.000Z" (.toISOString d)))))
